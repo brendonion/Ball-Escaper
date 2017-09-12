@@ -6,12 +6,13 @@ import ButtonStyles from '../../../styles/ButtonStyles';
 const MainButton = (props) => {
   return (
     <TouchableNativeFeedback
-      onPress={() => console.log('hi')}
-      background={TouchableNativeFeedback.SelectableBackground()}>
-    <View style={ButtonStyles.mainButton}>
-      <Text style={ButtonStyles.text}>{props.text}</Text>
-    </View>
-  </TouchableNativeFeedback>
+      onPress={() => props.onPress(props.view)}
+      background={TouchableNativeFeedback.SelectableBackground()}
+    >
+      <View style={ButtonStyles.mainButton}>
+        <Text style={ButtonStyles.text}>{props.text}</Text>
+      </View>
+    </TouchableNativeFeedback>
   )
 }
 
