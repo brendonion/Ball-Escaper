@@ -1,11 +1,20 @@
 import { StyleSheet } from 'react-native';
 
+const BACKGROUND = '#0078cd';
+const HEADER_BACKGROUND = '#0060A4'
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0078cd'
+    backgroundColor: BACKGROUND,
+  },
+  game: {
+    position: 'relative',
+    height: 300,
+    width: 300,
+    backgroundColor: 'white',
   },
   logo: {
     marginBottom: 40
@@ -26,15 +35,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 50,
-    backgroundColor: '#0060A4',
+    backgroundColor: HEADER_BACKGROUND,
   },
   headerLogoStyle: {
     width: 200,
     height: 150,
   },
-  headerTitleStyle: {
-    width: 200,
-  }
 });
 
 export default styles
