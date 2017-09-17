@@ -21,20 +21,19 @@ const styles = StyleSheet.create({
     width: 50,
   },
   headerContainer: {
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
+    height: 50,
     backgroundColor: '#0060A4',
   },
   headerLogoStyle: {
-    position: 'absolute',
-    top: 0,
-    right: 20,
-    width: 100,
-    height: 50,
+    width: 200,
+    height: 150,
   },
   headerTitleStyle: {
-    width: '70%',
-    height: 10,
-    padding: 20
+    width: 200,
   }
 });
 
