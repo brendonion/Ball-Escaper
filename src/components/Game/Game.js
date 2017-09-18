@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, Image } from 'react-native';
 import { Loop, Stage } from 'react-game-kit/native';
-import { Dial } from 'react-native-dial'; 
 
 import MainButton from '../reusables/MainButton';
+import Joystick from '../reusables/Joystick';
 import Player from './Player';
 
 import ContainerStyles from '../../../styles/ContainerStyles';
@@ -25,45 +25,18 @@ export default class Game extends Component {
 
   //handle movement here
   movePlayer(angle) {
-    switch (angle) {
-      case (Math.ceil(angle) % 45 == 0):
-        return 'UP';
-        break;
-      case (Math.ceil(angle) % 90 == 0):
-        return 'UP-RIGHT';
-        break;
-      case (Math.ceil(angle) % 135 == 0):
-        return 'RIGHT';
-        break;
-      case (Math.ceil(angle) % 180 == 0): 
-        return 'DOWN-RIGHT';
-        break;
-    }
+  //   switch (angle) {
+  //     case (angle > ??):
+  //       return 'UP';
+  //       break;
+  //   }
   }
 
   // handle redraw here or something
-  handleMovement(angle) {
+  draw(angle) {
     this.movePlayer(angle);
     let newX = this.state.playerX;
     let newY = this.state.playerY;
-    console.log(a);
-    console.log('playerX: ', this.state.playerX);
-    console.log('playerY: ', this.state.playerY);
-    switch (angle) {
-      case (angle == 0 || a % 360 == 0): 
-        newX = 0;
-        newY = 0;
-        this.setState({playerX: newX, playerY: newY});
-        break;
-      case (angle >= 10):
-        newX = 0;
-        newY = 0;
-        this.setState({playerX: 10, playerY: 10});
-
-        break;
-      default:
-        return;
-    }
   }
 
   render() {
@@ -76,20 +49,10 @@ export default class Game extends Component {
             playerY={this.state.playerY}
           />
         </View>
-        <Dial 
-          initialAngle={45}
-          initialRadius={0}
-          radiusMax={10}
-          radiusMin={0}
-          wrapperStyle={{backgroundColor: '#0060A4'}}
-          onValueChange={(angle) => this.handleMovement(angle)} 
-        />
+        <Joystick />
       </View>
     )
   }
 }
-
-// {/* responderStyle={styles.responderStyle}
-//           wrapperStyle={styles.wheelWrapper} */}
 
 AppRegistry.registerComponent('Game', () => Game);
