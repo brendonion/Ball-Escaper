@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, TouchableNativeFeedback, Image } from 'react-native';
 
 import ButtonStyles from '../../../styles/ButtonStyles';
