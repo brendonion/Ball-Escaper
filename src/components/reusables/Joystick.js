@@ -56,7 +56,9 @@ class Joystick extends Component {
     let angle = Math.atan2(y, x);
     let xx = r * Math.cos(angle);
     let yy = r * Math.sin(angle);
-    this.state.pan.setValue({x: xx, y: yy});
+    if ((x * x + y * y) >= r * r) {
+      this.state.pan.setValue({x: xx, y: yy});
+    }
   }
 
   render() {
