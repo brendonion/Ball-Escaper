@@ -9,9 +9,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: 150,
+    width: 300,
+  },
+  joystickContainer: {
+    position: 'absolute',
     height: 100,
     width: 100,
-    margin: 25,
     borderRadius: 200,
     borderWidth: 0.5,
     borderColor: BORDER_COLOR,
@@ -25,7 +29,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 0.5,
     borderColor: BORDER_COLOR,
-    zIndex: 100
   }
 });
 
