@@ -52,15 +52,11 @@ class Joystick extends Component {
   handleControl() {
     let x = this.state.pan.x._value;
     let y = this.state.pan.y._value;
-    if (x >= 70) {
-      this.state.pan.setValue({x: 70, y: y});
-    } else if (x <= -70 ) {
-      this.state.pan.setValue({x: -70, y: y});
-    } else if (y >= 70) {
-      this.state.pan.setValue({x: x, y: 70});
-    } else if (y <= -70) {
-      this.state.pan.setValue({x: x, y: -70});
-    }
+    let r = 50;
+    let angle = Math.atan2(y, x);
+    let xx = r * Math.cos(angle);
+    let yy = r * Math.sin(angle);
+    this.state.pan.setValue({x: xx, y: yy});
   }
 
   render() {
