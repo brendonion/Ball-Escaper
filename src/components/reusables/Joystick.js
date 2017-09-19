@@ -24,7 +24,9 @@ class Joystick extends Component {
       onMoveShouldSetPanResponderCapture: () => true,
   
       onPanResponderGrant: (e, gestureState) => {
-        this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
+        let x = this.state.pan.x._value;
+        let y = this.state.pan.y._value;
+        this.state.pan.setOffset({x: x, y: y});
         this.state.pan.setValue({x: 0, y: 0});
         Animated.spring(
           this.state.scale,
@@ -48,8 +50,17 @@ class Joystick extends Component {
   }
 
   handleControl() {
-    console.log('x', this.state.pan.x._value);
-    console.log('y', this.state.pan.y._value);
+    let x = this.state.pan.x._value;
+    let y = this.state.pan.y._value;
+    if (x >= 70) {
+      this.state.pan.setValue({x: 70, y: y});
+    } else if (x <= -70 ) {
+      this.state.pan.setValue({x: -70, y: y});
+    } else if (y >= 70) {
+      this.state.pan.setValue({x: x, y: 70});
+    } else if (y <= -70) {
+      this.state.pan.setValue({x: x, y: -70});
+    }
   }
 
   render() {
@@ -59,6 +70,7 @@ class Joystick extends Component {
     let imageStyle = {transform: [{translateX}, {translateY}, {rotate: '0deg'}, {scale}]};
     return (
       <View style={JoystickStyles.container}>
+        <View style={JoystickStyles.joystickContainer}></View>
         <Animated.View style={imageStyle} {...this._panResponder.panHandlers}>
           <View style={JoystickStyles.stick} onTouchMove={() => this.handleControl()} />
         </Animated.View>
