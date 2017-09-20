@@ -42,24 +42,34 @@ export default class Game extends Component {
 
   movePlayer() {
     let angle = Math.ceil(this.state.angle);
-    console.log('angle: ', angle);
+    let speed = 3;
     let newX = this.state.playerX;
     let newY = this.state.playerY;
     if (this.state.move) {
-      if (angle >= -105 && angle <= -75) {
+      if (angle >= -112.5 && angle < -67.5) {
         // UP
-        this.setState({playerY: newY -= 3});
-      } else if (angle) {
-        
-      } else if (angle <= 105 && angle >= 75) {
+        this.setState({playerY: newY -= speed});
+      } else if (angle >= -67.5 && angle < -22.5) {
+        // UP RIGHT
+        this.setState({playerX: newX += speed, playerY: newY -= speed});
+      } else if (angle >= -157.5 && angle < -112.5) {
+        // UP LEFT
+        this.setState({playerX: newX -= speed, playerY: newY -= speed});
+      } else if (angle >= 67.5 && angle < 112.5) {
         // DOWN
-        this.setState({playerY: newY += 3});
-      } else if (angle <= 15 && angle >= -15) {
+        this.setState({playerY: newY += speed});
+      } else if (angle >= 22.5 && angle < 67.5) {
+        // DOWN RIGHT
+        this.setState({playerX: newX += speed, playerY: newY += speed});
+      } else if (angle >= 112.5 && angle < 157.5) {
+        // DOWN LEFT
+        this.setState({playerX: newX -= speed, playerY: newY += speed});
+      } else if (angle >= -22.5 && angle < 22.5) {
         // RIGHT
-        this.setState({playerX: newX += 3});
-      } else if ((angle <= -165 && angle >= -179) || (angle <= 180 && angle >= 165)) {
+        this.setState({playerX: newX += speed});
+      } else if ((angle >= 157.5 && angle < 180) || (angle >= -180 && angle < -157.5)) {
         // LEFT
-        this.setState({playerX: newX -= 3})
+        this.setState({playerX: newX -= speed});
       }
     }
   }
