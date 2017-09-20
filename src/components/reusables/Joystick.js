@@ -59,6 +59,8 @@ class Joystick extends Component {
     if ((x * x + y * y) >= r * r) {
       this.state.pan.setValue({x: xx, y: yy});
     }
+    let degrees = angle * 180 / Math.PI;
+    this.props.handleMovement(degrees, true);
   }
 
   render() {
@@ -70,7 +72,11 @@ class Joystick extends Component {
       <View style={JoystickStyles.container}>
         <View style={JoystickStyles.joystickContainer}></View>
         <Animated.View style={imageStyle} {...this._panResponder.panHandlers}>
-          <View style={JoystickStyles.stick} onTouchMove={() => this.handleControl()} />
+          <View 
+            style={JoystickStyles.stick} 
+            onTouchMove={() => this.handleControl()} 
+            onTouchEnd={() => this.props.handleMovement(0, false)}
+          />
         </Animated.View>
       </View>
     )

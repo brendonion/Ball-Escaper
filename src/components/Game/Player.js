@@ -10,8 +10,7 @@ const Player = (props) => {
         height: 25, 
         borderRadius: 500,
         backgroundColor: '#97efdf',
-        top: props.playerX,
-        left: props.playerY,
+        transform: [{translateX: props.playerX}, {translateY: props.playerY}]
       }}
     >
     </View>

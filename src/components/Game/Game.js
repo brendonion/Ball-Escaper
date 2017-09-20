@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { AppRegistry, Text, View, Image } from 'react-native';
 import { Loop, Stage } from 'react-game-kit/native';
 
@@ -12,8 +12,10 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playerX: '50%',
-      playerY: '50%',
+      playerX: 50,
+      playerY: 50,
+      angle: 0,
+      move: false,
     }
   }
 
@@ -22,21 +24,44 @@ export default class Game extends Component {
     headerStyle: { backgroundColor: '#0060A4' },
     headerTitleStyle: { alignSelf: 'center' },
   }
-
-  //handle movement here
-  movePlayer(angle) {
-  //   switch (angle) {
-  //     case (angle > ??):
-  //       return 'UP';
-  //       break;
-  //   }
+  
+  componentDidMount() {
+    let framesPerSecond = 30;
+    this.timerID = setInterval(() => {
+      this.movePlayer();
+    }, 1000/framesPerSecond);
   }
 
-  // handle redraw here or something
-  draw(angle) {
-    this.movePlayer(angle);
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  setAngle(angle, move) {
+    this.setState({angle: angle, move: move});
+  }
+
+  movePlayer() {
+    let angle = Math.ceil(this.state.angle);
+    console.log('angle: ', angle);
     let newX = this.state.playerX;
     let newY = this.state.playerY;
+    if (this.state.move) {
+      if (angle >= -105 && angle <= -75) {
+        // UP
+        this.setState({playerY: newY -= 3});
+      } else if (angle) {
+        
+      } else if (angle <= 105 && angle >= 75) {
+        // DOWN
+        this.setState({playerY: newY += 3});
+      } else if (angle <= 15 && angle >= -15) {
+        // RIGHT
+        this.setState({playerX: newX += 3});
+      } else if ((angle <= -165 && angle >= -179) || (angle <= 180 && angle >= 165)) {
+        // LEFT
+        this.setState({playerX: newX -= 3})
+      }
+    }
   }
 
   render() {
@@ -49,7 +74,9 @@ export default class Game extends Component {
             playerY={this.state.playerY}
           />
         </View>
-        <Joystick />
+        <Joystick 
+          handleMovement={(angle, move) => this.setAngle(angle, move)}
+        />
       </View>
     )
   }
