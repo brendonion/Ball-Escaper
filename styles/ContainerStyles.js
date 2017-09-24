@@ -41,6 +41,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 150,
   },
+  countdown: {
+    fontSize: 20,
+    color: 'white',
+    padding: 2,
+  }
 });
 
 export default styles
