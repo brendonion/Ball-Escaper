@@ -12,10 +12,11 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playerX: 50,
-      playerY: 50,
+      playerX: 140,
+      playerY: 140,
       angle: 0,
       move: false,
+      direction: '',
     }
   }
 
@@ -42,35 +43,42 @@ export default class Game extends Component {
 
   movePlayer() {
     let angle = Math.ceil(this.state.angle);
-    let speed = 3;
+    let speed = 5;
     let newX = this.state.playerX;
     let newY = this.state.playerY;
+    this.handleLimit();
     if (this.state.move) {
       if (angle >= -112.5 && angle < -67.5) {
-        // UP
-        this.setState({playerY: newY -= speed});
+        this.setState({playerY: newY -= speed, direction: 'UP'});
       } else if (angle >= -67.5 && angle < -22.5) {
-        // UP RIGHT
-        this.setState({playerX: newX += speed, playerY: newY -= speed});
+        this.setState({playerX: newX += speed, playerY: newY -= speed, direction: 'DOWN'});
       } else if (angle >= -157.5 && angle < -112.5) {
-        // UP LEFT
-        this.setState({playerX: newX -= speed, playerY: newY -= speed});
+        this.setState({playerX: newX -= speed, playerY: newY -= speed, direction: 'UP LEFT'});
       } else if (angle >= 67.5 && angle < 112.5) {
-        // DOWN
-        this.setState({playerY: newY += speed});
+        this.setState({playerY: newY += speed, direction: 'DOWN'});
       } else if (angle >= 22.5 && angle < 67.5) {
-        // DOWN RIGHT
-        this.setState({playerX: newX += speed, playerY: newY += speed});
+        this.setState({playerX: newX += speed, playerY: newY += speed, direction: 'DOWN RIGHT'});
       } else if (angle >= 112.5 && angle < 157.5) {
-        // DOWN LEFT
-        this.setState({playerX: newX -= speed, playerY: newY += speed});
+        this.setState({playerX: newX -= speed, playerY: newY += speed, direction: 'DOWN LEFT'});
       } else if (angle >= -22.5 && angle < 22.5) {
-        // RIGHT
-        this.setState({playerX: newX += speed});
+        this.setState({playerX: newX += speed, direction: 'RIGHT'});
       } else if ((angle >= 157.5 && angle < 180) || (angle >= -180 && angle < -157.5)) {
-        // LEFT
-        this.setState({playerX: newX -= speed});
+        this.setState({playerX: newX -= speed, direction: 'LEFT'});
       }
+    }
+  }
+
+  handleLimit() {
+    let newX = this.state.playerX;
+    let newY = this.state.playerY;
+    if (newY >= 290) {
+      this.setState({playerY: newY -= 15, move: false});
+    } else if (newY <= 0) {
+      this.setState({playerY: newY += 5, move: false});
+    } else if (newX >= 290) {
+      this.setState({playerX: newX -= 15, move: false});
+    } else if (newX <= 0) {
+      this.setState({playerX: newX += 5, move: false});
     }
   }
 
