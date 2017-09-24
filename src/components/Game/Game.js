@@ -9,6 +9,8 @@ import Enemy from './Enemy';
 
 import ContainerStyles from '../../../styles/ContainerStyles';
 
+let allEnemies = [<Enemy />];
+
 export default class Game extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ export default class Game extends Component {
       move: false,
       direction: '',
       seconds: 1,
-      enemies: 1,
+      enemies: [],
     }
   }
 
@@ -32,12 +34,14 @@ export default class Game extends Component {
   }
   
   componentDidMount() {
+    let enemyArray = [<Enemy enemyX={this.state.enemyX} enemyY={this.state.enemyY} key={Math.random()}/>];
+    this.setState({enemies: enemyArray});
     let framesPerSecond = 30;
     this.timerID = setInterval(() => {
       this.movePlayer();
       this.handleLimit();
       this.moveEnemy();
-    }, 1000/framesPerSecond);
+    }, 1000 / framesPerSecond);
     this.secondsID = setInterval(() => {
       this.count();
     }, 1000);
@@ -50,10 +54,11 @@ export default class Game extends Component {
 
   count() {
     let seconds = this.state.seconds;
-    let enemyAmount = this.state.enemies;
+    let enemies = this.state.enemies;
     this.setState({seconds: seconds += 1});
     if (this.state.seconds % 15 == 0) {
-      this.setState({enemies: enemyAmount += 1});
+      enemies.push(<Enemy enemyX={Math.floor(Math.random() * 300)} enemyY={Math.floor(Math.random() * 300)} key={Math.random()}/>);
+      this.setState({enemies: enemies});
     }
   }
 
@@ -88,7 +93,9 @@ export default class Game extends Component {
   }
 
   moveEnemy() {
-    let speed = 5;
+    let speed = 3;
+    let enemies = this.state.enemies;
+    let newEnemies = [];
     let playerX = this.state.playerX;
     let playerY = this.state.playerY;
     let enemyX = this.state.enemyX;
@@ -100,7 +107,14 @@ export default class Game extends Component {
       dx /= length;
       dy /= length;
     }
-    this.setState({enemyX: enemyX += dx * 3, enemyY: enemyY += dy * 3});
+    for (let i = 0; i < enemies.length; i++) {
+      if (i == 0) {
+        newEnemies.push(<Enemy enemyX={enemyX} enemyY={enemyY} key={Math.random()} />);
+      } else {
+        newEnemies.push(<Enemy enemyX={enemyX * i + 15} enemyY={enemyY * i + 15} key={Math.random()}/>);
+      }
+    }
+    this.setState({enemies: newEnemies, enemyX: enemyX += dx * speed, enemyY: enemyY += dy * speed});
   }
 
   handleLimit() {
@@ -127,10 +141,7 @@ export default class Game extends Component {
             playerX={this.state.playerX}
             playerY={this.state.playerY}
           />
-          <Enemy
-            enemyX={this.state.enemyX}
-            enemyY={this.state.enemyY}
-          />
+          {this.state.enemies}
         </View>
         <Joystick 
           handleMovement={(angle, move) => this.setAngle(angle, move)}
