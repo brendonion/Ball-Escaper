@@ -103,6 +103,8 @@ export default class Game extends Component {
     let playerX = this.state.playerX;
     let playerY = this.state.playerY;
     for (let i = 0; i < enemies.length; i++) {
+      let prevXKey = `enemyX${i - 1}`;
+      let prevYKey = `enemyY${i - 1}`;
       let xKey = `enemyX${i}`;
       let yKey = `enemyY${i}`;
       let enemyX = this.state[xKey];
