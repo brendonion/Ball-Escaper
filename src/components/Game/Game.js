@@ -17,8 +17,8 @@ export default class Game extends Component {
     this.state = {
       playerX: 140,
       playerY: 140,
-      enemyX: Math.floor(Math.random() * 300),
-      enemyY: Math.floor(Math.random() * 300),
+      enemyX0: Math.floor(Math.random() * 300),
+      enemyY0: Math.floor(Math.random() * 300),
       angle: 0,
       move: false,
       direction: '',
@@ -34,7 +34,7 @@ export default class Game extends Component {
   }
   
   componentDidMount() {
-    let enemyArray = [<Enemy enemyX={this.state.enemyX} enemyY={this.state.enemyY} key={Math.random()}/>];
+    let enemyArray = [<Enemy enemyX={this.state.enemyX0} enemyY={this.state.enemyY0} key={0} />];
     this.setState({enemies: enemyArray});
     let framesPerSecond = 30;
     this.timerID = setInterval(() => {
@@ -57,8 +57,12 @@ export default class Game extends Component {
     let enemies = this.state.enemies;
     this.setState({seconds: seconds += 1});
     if (this.state.seconds % 15 == 0) {
-      enemies.push(<Enemy enemyX={Math.floor(Math.random() * 300)} enemyY={Math.floor(Math.random() * 300)} key={Math.random()}/>);
-      this.setState({enemies: enemies});
+      let newEnemyX = Math.floor(Math.random() * 300);
+      let newEnemyY = Math.floor(Math.random() * 300);
+      let newXKey = `enemyX${enemies.length}`;
+      let newYKey = `enemyY${enemies.length}`;
+      enemies.push(<Enemy enemyX={newEnemyX} enemyY={newEnemyY} key={enemies.length}/>);
+      this.setState({enemies: enemies, [newXKey]: newEnemyX, [newYKey]: newEnemyY});
     }
   }
 
@@ -98,23 +102,19 @@ export default class Game extends Component {
     let newEnemies = [];
     let playerX = this.state.playerX;
     let playerY = this.state.playerY;
-    let enemyX = this.state.enemyX;
-    let enemyY = this.state.enemyY;
-    let dx = playerX - enemyX;
-    let dy = playerY - enemyY;
-    let length = Math.sqrt(dx * dx + dy * dy);
-    if (length) {
-      dx /= length;
-      dy /= length;
-    }
     for (let i = 0; i < enemies.length; i++) {
-      if (i == 0) {
-        newEnemies.push(<Enemy enemyX={enemyX} enemyY={enemyY} key={Math.random()} />);
-      } else {
-        newEnemies.push(<Enemy enemyX={enemyX * i + 15} enemyY={enemyY * i + 15} key={Math.random()}/>);
-      }
+      let xKey = `enemyX${i}`;
+      let yKey = `enemyY${i}`;
+      let enemyX = this.state[xKey];
+      let enemyY = this.state[yKey];
+      let dx = playerX - enemyX;
+      let dy = playerY - enemyY;
+      let length = Math.sqrt(dx * dx + dy * dy);
+      if (length) { dx /= length; dy /= length; }
+      this.setState({[xKey]: enemyX += dx * speed, [yKey]: enemyY += dy * speed});
+      newEnemies.push(<Enemy enemyX={enemyX} enemyY={enemyY} key={i} />);
     }
-    this.setState({enemies: newEnemies, enemyX: enemyX += dx * speed, enemyY: enemyY += dy * speed});
+    this.setState({enemies: newEnemies});
   }
 
   handleLimit() {
