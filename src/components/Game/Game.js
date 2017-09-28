@@ -9,7 +9,10 @@ import Enemy from './Enemy';
 
 import ContainerStyles from '../../../styles/ContainerStyles';
 
-let allEnemies = [<Enemy />];
+let enemyLocations = {
+  enemyX0: Math.floor(Math.random() * 300),
+  enemyY0: Math.floor(Math.random() * 300),
+}
 
 export default class Game extends Component {
   constructor(props) {
@@ -103,17 +106,17 @@ export default class Game extends Component {
     let playerX = this.state.playerX;
     let playerY = this.state.playerY;
     for (let i = 0; i < enemies.length; i++) {
-      let prevXKey = `enemyX${i - 1}`;
-      let prevYKey = `enemyY${i - 1}`;
-      let xKey = `enemyX${i}`;
-      let yKey = `enemyY${i}`;
-      let enemyX = this.state[xKey];
-      let enemyY = this.state[yKey];
+      // let prevXKey = `enemyX${i - 1}`;
+      // let prevYKey = `enemyY${i - 1}`;
+      // let xKey = ;
+      // let yKey = ;
+      let enemyX = this.state[`enemyX${i}`];
+      let enemyY = this.state[`enemyY${i}`];
       let dx = playerX - enemyX;
       let dy = playerY - enemyY;
       let length = Math.sqrt(dx * dx + dy * dy);
       if (length) { dx /= length; dy /= length; }
-      this.setState({[xKey]: enemyX += dx * speed, [yKey]: enemyY += dy * speed});
+      this.setState({[`enemyX${i}`]: enemyX += dx * speed, [`enemyY${i}`]: enemyY += dy * speed});
       newEnemies.push(<Enemy enemyX={enemyX} enemyY={enemyY} key={i} />);
     }
     this.setState({enemies: newEnemies});
