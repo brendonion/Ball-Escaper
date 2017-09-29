@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { AppRegistry, Text, View, Image } from 'react-native';
-import { Loop, Stage } from 'react-game-kit/native';
 
 import MainButton from '../reusables/MainButton';
 import Joystick from '../reusables/Joystick';
@@ -27,6 +26,7 @@ export default class Game extends Component {
       direction: '',
       seconds: 1,
       enemies: [],
+      gameOver: false,
     }
   }
 
@@ -105,23 +105,27 @@ export default class Game extends Component {
     let newEnemies = [];
     let playerX = this.state.playerX;
     let playerY = this.state.playerY;
-    for (let i = 0; i < enemies.length; i++) {
-      // let prevXKey = `enemyX${i - 1}`;
-      // let prevYKey = `enemyY${i - 1}`;
-      // let xKey = ;
-      // let yKey = ;
-      let enemyX = this.state[`enemyX${i}`];
-      let enemyY = this.state[`enemyY${i}`];
-      let dx = playerX - enemyX;
-      let dy = playerY - enemyY;
-      let length = Math.sqrt(dx * dx + dy * dy);
+    let enemyX;
+    let enemyY;
+    let dx;
+    let dy;
+    let length;
+    for (var i = 0; i < enemies.length; i++) {
+      enemyX = this.state[`enemyX${i}`];
+      enemyY = this.state[`enemyY${i}`];
+      dx = playerX - enemyX;
+      dy = playerY - enemyY;
+      length = Math.sqrt(dx * dx + dy * dy);
       if (length) { dx /= length; dy /= length; }
       this.setState({[`enemyX${i}`]: enemyX += dx * speed, [`enemyY${i}`]: enemyY += dy * speed});
       newEnemies.push(<Enemy enemyX={enemyX} enemyY={enemyY} key={i} />);
+      if (length <= 3) {
+        this.handleGameOver();
+      }
     }
     this.setState({enemies: newEnemies});
   }
-
+  
   handleLimit() {
     let newX = this.state.playerX;
     let newY = this.state.playerY;
@@ -135,12 +139,43 @@ export default class Game extends Component {
       this.setState({playerX: newX += 5, move: false});
     }
   }
+  
+  handleGameOver() {
+    clearInterval(this.timerID);
+    clearInterval(this.secondsID);
+    this.setState({gameOver: true});
+  }
 
+  handleReset() {
+    let enemyX0 = Math.floor(Math.random() * 300);
+    let enemyY0 = Math.floor(Math.random() * 300);
+    this.setState({
+      seconds: 1, 
+      enemyX0: enemyX0,
+      enemyY0: enemyY0,
+      enemies: [<Enemy enemyX={enemyX0} enemyY={enemyY0} key={0} />], 
+      playerX: 140,
+      playerY: 140,
+      gameOver: false
+    });
+    let framesPerSecond = 30;
+    this.timerID = setInterval(() => {
+      this.movePlayer();
+      this.handleLimit();
+      this.moveEnemy();
+    }, 1000 / framesPerSecond);
+    this.secondsID = setInterval(() => {
+      this.count();
+    }, 1000);
+  }
+  
   render() {
     return (
       <View style={ContainerStyles.container}>
         <Image source={require('./img/title.png')} />
         <Text style={ContainerStyles.countdown}>{this.state.seconds}</Text>
+        {!this.state.gameOver 
+        ?
         <View style={ContainerStyles.game}>
           <Player 
             playerX={this.state.playerX}
@@ -148,6 +183,18 @@ export default class Game extends Component {
           />
           {this.state.enemies}
         </View>
+        :
+        <View style={ContainerStyles.gameOverContainer}>
+          <Text style={ContainerStyles.largeText}>GAME OVER</Text>
+          <Text>You lasted {this.state.seconds} seconds</Text>
+        </View>
+        }
+        {this.state.gameOver &&
+          <View>
+            <Text style={ContainerStyles.playAgain}>Play Again?</Text>
+            <MainButton text={'START'} onPress={() => this.handleReset()} />
+          </View>
+        } 
         <Joystick 
           handleMovement={(angle, move) => this.setAngle(angle, move)}
         />
