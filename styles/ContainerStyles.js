@@ -10,6 +10,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: BACKGROUND,
   },
+  gameOverContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 300,
+    width: 300,
+    backgroundColor: 'white',
+  },
   game: {
     position: 'relative',
     height: 300,
@@ -45,6 +53,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     padding: 2,
+  },
+  largeText: {
+    fontSize: 30,
+    fontWeight: 'bold'
+  },
+  playAgain: {
+    fontSize: 15,
+    color: 'white',
+    marginTop: 10,
+    marginBottom: 10,
   }
 });
 
