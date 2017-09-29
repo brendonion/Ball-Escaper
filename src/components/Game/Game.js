@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { AppRegistry, Text, View, Image } from 'react-native';
-import { Loop, Stage } from 'react-game-kit/native';
 
 import MainButton from '../reusables/MainButton';
 import Joystick from '../reusables/Joystick';
